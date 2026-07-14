@@ -1,8 +1,8 @@
 [package]
 name = "tool-collection"
-version = "0.1.0"
-description = "A comprehensive tool collection application built with Tauri"
-authors = ["Tool Collection Team"]
+version = "0.2.0"
+description = "An extensible Windows tool collection built with Tauri, Rust, React and Python"
+authors = ["Tool Collection Contributors"]
 edition = "2021"
 
 [lib]
@@ -17,7 +17,10 @@ tauri = { version = "2", features = ["custom-protocol"] }
 tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-tokio = { version = "1", features = ["full"] }
+tokio = { version = "1", features = ["process", "time"] }
+tauri-plugin-shell = "2"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json"] }
+url = "2"
 
 [profile.release]
 codegen-units = 1

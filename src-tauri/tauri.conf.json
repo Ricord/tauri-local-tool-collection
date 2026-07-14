@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "Tool Collection",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "identifier": "com.toolcollection.app",
   "build": {
     "beforeDevCommand": "pnpm dev",
@@ -12,20 +12,28 @@
   "app": {
     "windows": [
       {
-        "title": "Tool Collection",
-        "width": 1200,
-        "height": 800,
-        "minWidth": 800,
-        "minHeight": 600
+        "label": "main",
+        "title": "Tool Collection - Windows Edition",
+        "width": 1280,
+        "height": 820,
+        "minWidth": 900,
+        "minHeight": 640,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true
       }
     ],
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; connect-src ipc: http://ipc.localhost; img-src 'self' asset: http://asset.localhost blob: data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; script-src 'self'"
     }
   },
   "bundle": {
     "active": true,
-    "targets": ["msi", "nsis"],
+    "publisher": "Tool Collection",
+    "copyright": "Copyright © 2026 Tool Collection contributors",
+    "category": "DeveloperTool",
+    "shortDescription": "可扩展的 Windows 本地工具集合",
+    "longDescription": "基于 Tauri、Rust、React 与 Python Sidecar 构建的可扩展 Windows 本地工具集合。",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

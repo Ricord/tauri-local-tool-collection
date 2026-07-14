@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Windows Python sidecar build cache and generated executable
+.venv-windows/
+build/python-sidecar/
+src-tauri/binaries/*.exe
