@@ -1,6 +1,6 @@
 [package]
 name = "tool-collection"
-version = "0.2.0"
+version = "0.2.1"
 description = "An extensible Windows tool collection built with Tauri, Rust, React and Python"
 authors = ["Tool Collection Contributors"]
 edition = "2021"

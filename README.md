@@ -71,13 +71,13 @@ corepack prepare pnpm@11.12.0 --activate
 pnpm install --frozen-lockfile
 ```
 
-首次启动开发模式时，命令会自动安装 PyInstaller、生成 Windows Sidecar，然后启动 Tauri：
+首次启动开发模式时，命令会自动创建隔离的 Python 虚拟环境、安装 PyInstaller、生成 Windows Sidecar，然后启动 Tauri：
 
 ```powershell
 pnpm windows:dev
 ```
 
-只重新生成 Python Sidecar时，可以执行：
+从 **v0.2.1** 开始，`pnpm tauri dev`、`pnpm tauri build` 和直接在 `src-tauri` 中运行的 `cargo check/build` 也会自动检查并生成缺失或过期的 Sidecar。推荐继续使用下面的显式命令，以便单独查看 Python 构建输出：
 
 ```powershell
 pnpm windows:sidecar
@@ -236,14 +236,14 @@ const WEB_TOOLS: [(&str, &str); 3] = [
 |---|---|
 | `link.exe not found` | 安装 Visual Studio Build Tools 2022，并勾选“使用 C++ 的桌面开发”和 Windows SDK，然后重新打开 PowerShell |
 | `WebView2` 相关启动错误 | 安装或修复 Microsoft Edge WebView2 Runtime；重新运行 NSIS 安装程序 |
-| `tool-python` 找不到 | 不要直接执行普通的 `pnpm tauri dev`；改用 `pnpm windows:dev` 先生成 Sidecar |
+| `resource path binaries\\tool-python-x86_64-pc-windows-msvc.exe doesn't exist` | 更新到 v0.2.1 或更高版本后重新运行原命令，构建流程会自动生成 Sidecar。若仍失败，先执行 `pnpm windows:sidecar` 查看 Python/PyInstaller 的完整错误，再执行 `pnpm windows:dev` |
 | PyInstaller 安装失败 | 确认 `python --version` 为可用的 x64 Python，并检查代理与 pip 网络配置 |
 | Windows 执行策略拦截脚本 | 项目 npm 命令已使用 `-ExecutionPolicy Bypass` 启动本地构建脚本；也可在已信任的仓库目录中直接运行对应 npm 命令 |
 | GitHub Actions 没有安装包 | 打开失败步骤日志；安装包上传步骤要求 `src-tauri/target/release/bundle/nsis/*.exe` 必须存在 |
 
 ## 验证命令
 
-在提交代码前，建议依次运行：
+在提交代码前，建议依次运行。`cargo check` 会再次执行增量 Sidecar 检查，已有最新 EXE 时不会重新打包：
 
 ```powershell
 pnpm install --frozen-lockfile

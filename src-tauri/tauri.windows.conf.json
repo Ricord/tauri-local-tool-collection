@@ -1,5 +1,9 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
+  "build": {
+    "beforeDevCommand": "pnpm windows:sidecar && pnpm dev",
+    "beforeBuildCommand": "pnpm windows:sidecar && pnpm build"
+  },
   "bundle": {
     "active": true,
     "targets": ["nsis"],

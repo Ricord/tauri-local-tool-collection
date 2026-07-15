@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
-    [switch]$Force
+    [switch]$Force,
+    [string]$TargetTriple
 )
 
 $ErrorActionPreference = "Stop"
@@ -48,9 +49,16 @@ $HostLine = ($VerboseVersion -split "`r?`n" | Where-Object { $_ -like "host:*" }
 if ([string]::IsNullOrWhiteSpace($HostLine)) {
     throw "rustc -vV 未返回 host 目标三元组。"
 }
-$TargetTriple = ($HostLine -replace "^host:\s*", "").Trim()
-if ($TargetTriple -notmatch "windows-msvc$") {
-    throw "此脚本需要 Windows MSVC Rust 工具链，当前目标为：$TargetTriple"
+$HostTriple = ($HostLine -replace "^host:\s*", "").Trim()
+if ([string]::IsNullOrWhiteSpace($TargetTriple)) {
+    $TargetTriple = $HostTriple
+}
+$TargetTriple = $TargetTriple.Trim()
+if ($TargetTriple -notmatch "^(x86_64|aarch64)-pc-windows-msvc$") {
+    throw "此脚本仅支持 Windows MSVC 目标，当前目标为：$TargetTriple"
+}
+if ($TargetTriple -ne $HostTriple) {
+    throw "PyInstaller 不支持跨架构生成 Sidecar。Rust 主机为 $HostTriple，但构建目标为 $TargetTriple。请在对应架构的 Windows 环境中构建。"
 }
 
 $OutputBinary = Join-Path $BinariesDir "tool-python-$TargetTriple.exe"
